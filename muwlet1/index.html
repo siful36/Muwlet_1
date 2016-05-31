@@ -1,0 +1,878 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	
+	<!-- start: Meta -->
+	<meta charset="utf-8">
+	<title>MUWLET Web App</title>
+	<meta name="description" content="Bootstrap Metro Dashboard">
+	<meta name="author" content="Dennis Ji">
+	<meta name="keyword" content="Metro, Metro UI, Dashboard, Bootstrap, Admin, Template, Theme, Responsive, Fluid, Retina">
+	<!-- end: Meta -->
+	
+	<!-- start: Mobile Specific -->
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<!-- end: Mobile Specific -->
+	
+	<!-- start: CSS -->
+	<link id="bootstrap-style" href="css/bootstrap.min.css" rel="stylesheet">
+	<link href="css/bootstrap-responsive.min.css" rel="stylesheet">
+	<link id="base-style" href="css/style.css" rel="stylesheet">
+	<link id="base-style-responsive" href="css/style-responsive.css" rel="stylesheet">
+	
+
+	<!-- end: CSS -->
+	<!-- The HTML5 shim, for IE6-8 support of HTML5 elements -->
+	<!--[if lt IE 9]>
+	  	<script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
+		<link id="ie-style" href="css/ie.css" rel="stylesheet">
+	<![endif]-->
+	
+	<!--[if IE 9]>
+		<link id="ie9style" href="css/ie9.css" rel="stylesheet">
+	<![endif]-->
+		
+	<!-- start: Favicon -->
+	<link rel="shortcut icon" href="img/favicon.ico">
+	<!-- end: Favicon -->
+	
+	<script type="text/javascript"></script>
+
+	<!--bismillah-->
+		<script>
+		var japikey = '005d9063bc2a1cb4999ef67391f2ba42';
+		var jemail = 'nitbot@nitbot.com';
+		var jsuhu = 28, jkelembapan = 60, jreadon = 0;
+
+		function simpanAPIkey(form){
+			japikey = form.APIkey.value;
+			jemail = form.email.value;
+			console.log('APIkey',japikey);
+			console.log('Email',jemail);
+			document.getElementById("loginFlag").className = "bg-success";
+		}
+
+		function reqDataFromServer(varon) 
+		{
+			var sisip = "";
+			switch(varon) {
+				case 0:
+				sisip='readon';
+				break;
+				case 1:
+				sisip='readon';
+				break;
+				case 2:
+				sisip='readon';
+				break;
+				case 3:
+				sisip='readon';
+				break;
+				case 4:
+				sisip='readon';
+				break;
+				case 5:
+				sisip='readon';
+				break;
+				case 6:
+				sisip='readon';
+				break;
+				case 7:
+				sisip='readon';
+				break;
+				case 8:
+				sisip='readon';
+				break;
+				case 9:
+				sisip='suhu';
+				break;
+				case 10:
+				sisip='kelembapan';
+				break;
+				default:
+				break;
+			}
+			var request = new XMLHttpRequest();
+
+			request.open('GET', 'http://api.geeknesia.com/api/attribute/'+sisip+'?api_key=d815de1139bb8ba2fbba99d77336780e');
+
+			request.onreadystatechange = function () {
+				var ubclass="default";
+				var flagOn="";
+				if (this.readyState === 4) {
+					console.log('Status:', this.status);
+					console.log('Headers:', this.getAllResponseHeaders());
+					console.log('Body:', this.responseText);
+					objt=jQuery.parseJSON(this.responseText);
+					switch(varon) {
+						case 0:
+						console.log('isi:',objt.output.attribute.readon);
+						flagOn = objt.output.attribute.readon;
+						ubclass = "breset";
+						break;
+						case 1:
+						jreadon = parseInt(objt.output.attribute);
+						flagOn = jreadon & 1;
+						console.log('flagon1:',jreadon);
+						ubclass = "bon1";
+						break;
+						case 2:
+						jreadon = parseInt(objt.output.attribute.readon);
+						flagOn = jreadon & 2;
+						console.log('flagon2:',flagOn);
+						ubclass = "bon2";
+						break;
+						case 3:
+						jreadon = parseInt(objt.output.attribute.readon);
+						flagOn = jreadon & 4;
+						console.log('flagon3:',flagOn);
+						ubclass = "bon3";
+						break;
+						case 4:
+						jreadon = parseInt(objt.output.attribute.readon);
+						flagOn = jreadon & 8;
+						console.log('flagon4:',flagOn);
+						ubclass = "bon4";
+						break;
+						case 5:
+						jreadon = parseInt(objt.output.attribute.readon);
+						flagOn = jreadon & 16;
+						console.log('flagon5:',flagOn);
+						ubclass = "bon5";
+						break;
+						case 6:
+						jreadon = parseInt(objt.output.attribute.readon);
+						flagOn = jreadon & 32;
+						console.log('flagon6:',flagOn);
+						ubclass = "bon6";
+						break;
+						case 7:
+						jreadon = parseInt(objt.output.attribute.readon);
+						flagOn = jreadon & 64;
+						console.log('flagon7:6767');
+						ubclass = "bon7";
+						break;
+						case 8:
+						jreadon = parseInt(objt.output.attribute.readon);
+						flagOn = jreadon & 128;
+						console.log('flagon8:',flagOn);
+						ubclass = "bon8";
+						break;
+						case 9:
+						console.log('isi:',objt.output.attribute.suhu);
+						jsuhu=parseInt(objt.output.attribute.suhu);
+						document.getElementById("suhu").innerHTML = objt.output.attribute.suhu;
+						break;
+						case 10:
+						console.log('isi:',objt.output.attribute.kelembapan);
+						jkelembapan=parseInt(objt.output.attribute.kelembapan);
+						document.getElementById("kelembapan").innerHTML = objt.output.attribute.kelembapan;
+						break;
+						default:
+						break;
+					}
+					if (flagOn===0) 
+					{
+						document.getElementById(ubclass).className = "danger";
+					}
+					else 
+					{
+						document.getElementById(ubclass).className = "success";
+					}
+				}
+			};
+			request.send();
+		}
+		function kirimData(asal,onoff) 
+		{
+			var request = new XMLHttpRequest();
+			var kondisi;
+			switch(asal) {
+				case 000:
+					if (onoff==001){ 
+						kondisi=1;
+						console.log('asaal',000);
+						console.log('kondisi',kondisi);}
+					else {
+						kondisi=0; 
+						console.log('asaal',000);
+						console.log('kondisi',kondisi);}
+				break;
+				case 001:
+					if (onoff==001){ 
+						kondisi=1;
+						console.log('asaal',001);
+						console.log('kondisi',kondisi);}
+					else {
+						kondisi=0; 
+						console.log('asaal',001);
+						console.log('kondisi',kondisi);}
+				break;
+				case 002:
+					if (onoff==001){ 
+						kondisi=1;
+						console.log('asaal',002);
+						console.log('kondisi',kondisi);}
+					else {
+						kondisi=0; 
+						console.log('asaal',002);
+						console.log('kondisi',kondisi);}
+				break;
+				case 003:
+					if (onoff==001){ 
+						kondisi=1;
+						console.log('asaal',003);
+						console.log('kondisi',kondisi);}
+					else {
+						kondisi=0; 
+						console.log('asaal',003);
+						console.log('kondisi',kondisi);}
+				break;
+				case 004:
+					if (onoff==001){ 
+						kondisi=1;
+						console.log('asaal',004);
+						console.log('kondisi',kondisi);}
+					else {
+						kondisi=0; 
+						console.log('asaal',004);
+						console.log('kondisi',kondisi);}
+				break;
+				case 005:
+					if (onoff==001){ 
+						kondisi=1;
+						console.log('asaal',005);
+						console.log('kondisi',kondisi);}
+					else {
+						kondisi=0; 
+						console.log('asaal',005);
+						console.log('kondisi',kondisi);}
+				break;
+				case 006:
+					if (onoff==001){ 
+						kondisi=1;
+						console.log('asaal',006);
+						console.log('kondisi',kondisi);}
+					else {
+						kondisi=0; 
+						console.log('asaal',006);
+						console.log('kondisi',kondisi);}
+				break;
+				default:
+				break;
+			}
+			request.open('GET', 'http://api.thingspeak.com/update?api_key=ODIDPCI4YIO7VS00&field1=00'+asal+'00100'+onoff+'');
+
+			request.onreadystatechange = function () {
+				if (this.readyState === 4) {
+					console.log('Status:', this.status);
+					console.log('Headers:', this.getAllResponseHeaders());
+					console.log('Body:', this.responseText);
+				}
+			};
+
+			request.send();
+		}
+		function oneClick(asl,on_off)
+		{
+			kirimData(asl,on_off);
+			reqDataFromServer(asl);
+		}
+		function resetAll()
+		{
+			oneClick(0,0);
+			reqDataFromServer(9);
+			reqDataFromServer(10);
+			reqDataFromServer(1);
+			reqDataFromServer(2);
+			reqDataFromServer(3);
+			reqDataFromServer(4);
+			reqDataFromServer(5);
+			reqDataFromServer(6);
+			reqDataFromServer(0);
+		}
+	</script>
+		
+</head>
+
+
+
+<body>
+		<!-- start: Header -->
+	<div class="navbar">
+		<div class="navbar-inner">
+			<div class="container-fluid">
+				<a class="btn btn-navbar" data-toggle="collapse" data-target=".top-nav.nav-collapse,.sidebar-nav.nav-collapse">
+					<span class="icon-bar"></span>
+					<span class="icon-bar"></span>
+					<span class="icon-bar"></span>
+				</a>
+				<a class="brand" href="index.html"><span>MUWLET</span></a>
+								
+				<!-- start: Header Menu -->
+				
+				
+			</div>
+		</div>
+	</div>
+	<!-- start: Header -->
+	
+		<div class="container-fluid-full">
+		<div class="row-fluid">
+				
+			<!-- start: Main Menu -->
+			<div id="sidebar-left" class="span2">
+				<div class="nav-collapse sidebar-nav">
+					<ul class="nav nav-tabs nav-stacked main-menu">
+						<li><a href="index.html"><i class="icon-bar-chart"></i><span class="hidden-tablet"> Dashboard</span></a></li>	
+						
+						
+						
+						
+						
+						
+						<li><a href="gallery.html"><i class="icon-picture"></i><span class="hidden-tablet"> Gallery</span></a></li>
+						
+						<li><a href="calendar.html"><i class="icon-calendar"></i><span class="hidden-tablet"> Calendar</span></a></li>
+						
+						
+						<li><a href="login.html"><i class="icon-lock"></i><span class="hidden-tablet"> Login Page</span></a></li>
+					</ul>
+				</div>
+			</div>
+			<!-- end: Main Menu -->
+			
+			<noscript>
+				<div class="alert alert-block span10">
+					<h4 class="alert-heading">Warning!</h4>
+					<p>You need to have <a href="http://en.wikipedia.org/wiki/JavaScript" target="_blank">JavaScript</a> enabled to use this site.</p>
+				</div>
+			</noscript>
+			
+			<!-- start: Content -->
+			<div id="content" class="span10">
+			
+			
+			<ul class="breadcrumb">
+				<li>
+					<i class="icon-home"></i>
+					<a href="index.html">Home</a> 
+					<i class="icon-angle-right"></i>
+				</li>
+				<li><a href="#">Dashboard</a></li>
+			</ul>
+			
+			
+			<div class="row-fluid">	
+
+	<!--Soket 1-->
+				<div class="box blue span4">
+					<div class="box-header">
+						<h2><i class="halflings-icon home"></i><span class="break"></span>Socket 1</h2>
+					</div>
+					
+					<div class="box-content" align="center">
+												
+						<button class="btn btn-large btn-primary" onclick="oneClick(001,1)">ON </button>						
+						<button class="btn btn-large btn-danger" onclick="oneClick(001,0)">OFF</button>
+										
+						<div class="clearfix"></div>
+					</div>
+
+					<div class="box-content" align="center">
+						
+						<div class="row-fluid hideInIE8 circleStats">
+				
+							<div class="span6" onTablet="span4" onDesktop="span6">
+								<div class="circleStatsItemBox pink">
+									<div class="header">Arus</div>
+									<span class="percent">percent</span>
+									<div class="circleStat">
+										<input type="text" value="oneClick(110,22)" class="whiteCircle" />
+									</div>		
+									<div class="footer">
+										<span class="count">
+											<span class="number">100</span>
+											<span class="unit">MB</span>
+										</span>
+										<span class="sep"> / </span>
+										<span class="value">
+											<span class="number">550000</span>
+											<span class="unit">MB</span>
+										</span>	
+									</div>
+								</div>
+							</div>
+
+							<div class="span6" onTablet="span4" onDesktop="span6">
+								<div class="circleStatsItemBox green">
+									<div class="header">Suhu</div>
+									<span class="percent">celcius</span>
+									<div class="circleStat">
+										<input type="text" value="78" class="whiteCircle" />
+									</div>
+									<div class="footer">
+										<span class="count">
+											<span class="number">5000</span>
+											<span class="unit">GB</span>
+										</span>
+										<span class="sep"> / </span>
+										<span class="value">
+											<span class="number">5000</span>
+											<span class="unit">GB</span>
+										</span>	
+									</div>
+								</div>
+							</div>
+
+						</div>	
+						<div class="clearfix"></div>
+					</div>
+					
+				</div>
+
+				<!--/span-->
+
+	<!--Soket 2-->			
+				<div class="box blue span4">
+					<div class="box-header">
+						<h2><i class="halflings-icon home"></i><span class="break"></span>Socket 2</h2>
+					</div>
+					<div class="box-content" align="center">
+							
+						<button class="btn btn-large btn-primary">ON </button>
+						<button class="btn btn-large btn-danger">OFF</button>
+						
+						<div class="clearfix"></div>
+					</div>	
+					
+					<div class="box-content" align="center">
+						
+						<div class="row-fluid hideInIE8 circleStats">
+				
+							<div class="span6" onTablet="span4" onDesktop="span6">
+								<div class="circleStatsItemBox pink">
+									<div class="header">Daya Baterai</div>
+									<span class="percent">percent</span>
+									<div class="circleStat">
+										<input type="text" value="10" class="whiteCircle" />
+									</div>		
+									<div class="footer">
+										<span class="count">
+											<span class="number">20000</span>
+											<span class="unit">MB</span>
+										</span>
+										<span class="sep"> / </span>
+										<span class="value">
+											<span class="number">50000</span>
+											<span class="unit">MB</span>
+										</span>	
+									</div>
+								</div>
+							</div>
+
+							<div class="span6" onTablet="span4" onDesktop="span6">
+								<div class="circleStatsItemBox green">
+									<div class="header">Suhu</div>
+									<span class="percent">celcius</span>
+									<div class="circleStat">
+										<input type="text" value="78" class="whiteCircle" />
+									</div>
+									<div class="footer">
+										<span class="count">
+											<span class="number">5000</span>
+											<span class="unit">GB</span>
+										</span>
+										<span class="sep"> / </span>
+										<span class="value">
+											<span class="number">5000</span>
+											<span class="unit">GB</span>
+										</span>	
+									</div>
+								</div>
+							</div>
+
+						</div>	
+						<div class="clearfix"></div>
+					</div>
+					
+				</div>
+
+				<!--/span-->
+	<!--Soket 3-->			
+				<div class="box blue span4">
+					<div class="box-header">
+						<h2><i class="halflings-icon home"></i><span class="break"></span>Socket 3</h2>
+					</div>
+					<div class="box-content" align="center">
+												
+						<button class="btn btn-large btn-primary" onclick="oneClick(2,111);">ON </button>
+						<button class="btn btn-large btn-danger">OFF</button>
+																	
+						<div class="clearfix"></div>
+					</div>
+					
+					<div class="box-content" align="center">
+						
+						<div class="row-fluid hideInIE8 circleStats">
+				
+							<div class="span6" onTablet="span4" onDesktop="span6">
+								<div class="circleStatsItemBox pink">
+									<div class="header">Daya Baterai</div>
+									<span class="percent">percent</span>
+									<div class="circleStat">
+										<input type="text" value="10" class="whiteCircle" />
+									</div>		
+									<div class="footer">
+										<span class="count">
+											<span class="number">20000</span>
+											<span class="unit">MB</span>
+										</span>
+										<span class="sep"> / </span>
+										<span class="value">
+											<span class="number">50000</span>
+											<span class="unit">MB</span>
+										</span>	
+									</div>
+								</div>
+							</div>
+
+							<div class="span6" onTablet="span4" onDesktop="span6">
+								<div class="circleStatsItemBox green">
+									<div class="header">Suhu</div>
+									<span class="percent">celcius</span>
+									<div class="circleStat">
+										<input type="text" value="78" class="whiteCircle" />
+									</div>
+									<div class="footer">
+										<span class="count">
+											<span class="number">5000</span>
+											<span class="unit">GB</span>
+										</span>
+										<span class="sep"> / </span>
+										<span class="value">
+											<span class="number">5000</span>
+											<span class="unit">GB</span>
+										</span>	
+									</div>
+								</div>
+							</div>
+
+						</div>	
+						<div class="clearfix"></div>
+					</div>
+	
+
+				</div>
+			</div>
+				<!--/span-->
+
+	<!--Soket 4-->
+			<div class="row-fluid">	
+				<div class="box blue span4">
+					<div class="box-header">
+						<h2><i class="halflings-icon home"></i><span class="break"></span>Socket 4</h2>
+					</div>
+					<div class="box-content" align="center">
+												
+						<button class="btn btn-large btn-primary">ON </button>
+						<button class="btn btn-large btn-danger">OFF</button>
+																	
+						<div class="clearfix"></div>
+					</div>
+					
+					<div class="box-content" align="center">
+						
+						<div class="row-fluid hideInIE8 circleStats">
+				
+							<div class="span6" onTablet="span4" onDesktop="span6">
+								<div class="circleStatsItemBox pink">
+									<div class="header">Daya Baterai</div>
+									<span class="percent">percent</span>
+									<div class="circleStat">
+										<input type="text" value="10" class="whiteCircle" />
+									</div>		
+									<div class="footer">
+										<span class="count">
+											<span class="number">20000</span>
+											<span class="unit">MB</span>
+										</span>
+										<span class="sep"> / </span>
+										<span class="value">
+											<span class="number">50000</span>
+											<span class="unit">MB</span>
+										</span>	
+									</div>
+								</div>
+							</div>
+
+							<div class="span6" onTablet="span4" onDesktop="span6">
+								<div class="circleStatsItemBox green">
+									<div class="header">Suhu</div>
+									<span class="percent">celcius</span>
+									<div class="circleStat">
+										<input type="text" value="78" class="whiteCircle" />
+									</div>
+									<div class="footer">
+										<span class="count">
+											<span class="number">5000</span>
+											<span class="unit">GB</span>
+										</span>
+										<span class="sep"> / </span>
+										<span class="value">
+											<span class="number">5000</span>
+											<span class="unit">GB</span>
+										</span>	
+									</div>
+								</div>
+							</div>
+
+						</div>	
+						<div class="clearfix"></div>
+					</div>
+	
+
+				</div>
+
+				<!--/span-->
+
+	<!--Soket 5-->
+				<div class="box blue span4">
+					<div class="box-header">
+						<h2><i class="halflings-icon home"></i><span class="break"></span>Socket 5</h2>
+					</div>
+					<div class="box-content" align="center">
+												
+						<button class="btn btn-large btn-primary">ON </button>
+						<button class="btn btn-large btn-danger">OFF</button>
+																	
+						<div class="clearfix"></div>
+					</div>
+					
+					<div class="box-content" align="center">
+						
+						<div class="row-fluid hideInIE8 circleStats">
+				
+							<div class="span6" onTablet="span4" onDesktop="span6">
+								<div class="circleStatsItemBox pink">
+									<div class="header">Daya Baterai</div>
+									<span class="percent">percent</span>
+									<div class="circleStat">
+										<input type="text" value="10" class="whiteCircle" />
+									</div>		
+									<div class="footer">
+										<span class="count">
+											<span class="number">20000</span>
+											<span class="unit">MB</span>
+										</span>
+										<span class="sep"> / </span>
+										<span class="value">
+											<span class="number">50000</span>
+											<span class="unit">MB</span>
+										</span>	
+									</div>
+								</div>
+							</div>
+
+							<div class="span6" onTablet="span4" onDesktop="span6">
+								<div class="circleStatsItemBox green">
+									<div class="header">Suhu</div>
+									<span class="percent">celcius</span>
+									<div class="circleStat">
+										<input type="text" value="78" class="whiteCircle" />
+									</div>
+									<div class="footer">
+										<span class="count">
+											<span class="number">5000</span>
+											<span class="unit">GB</span>
+										</span>
+										<span class="sep"> / </span>
+										<span class="value">
+											<span class="number">5000</span>
+											<span class="unit">GB</span>
+										</span>	
+									</div>
+								</div>
+							</div>
+
+						</div>	
+						<div class="clearfix"></div>
+					</div>
+	
+
+				</div>
+
+				<!--/span-->
+
+	<!--Soket 6-->
+				<div class="box blue span4">
+					<div class="box-header">
+						<h2><i class="halflings-icon home"></i><span class="break"></span>Socket 6</h2>
+					</div>
+					<div class="box-content" align="center">
+												
+						<button class="btn btn-large btn-primary">ON </button>
+						<button class="btn btn-large btn-danger">OFF</button>
+																	
+						<div class="clearfix"></div>
+					</div>
+					
+					<div class="box-content" align="center">
+						
+						<div class="row-fluid hideInIE8 circleStats">
+				
+							<div class="span6" onTablet="span4" onDesktop="span6">
+								<div class="circleStatsItemBox pink">
+									<div class="header">Daya Baterai</div>
+									<span class="percent">percent</span>
+									<div class="circleStat">
+										<input type="text" value="10" class="whiteCircle" />
+									</div>		
+									<div class="footer">
+										<span class="count">
+											<span class="number">20000</span>
+											<span class="unit">MB</span>
+										</span>
+										<span class="sep"> / </span>
+										<span class="value">
+											<span class="number">50000</span>
+											<span class="unit">MB</span>
+										</span>	
+									</div>
+								</div>
+							</div>
+
+							<div class="span6" onTablet="span4" onDesktop="span6">
+								<div class="circleStatsItemBox green">
+									<div class="header">Suhu</div>
+									<span class="percent">celcius</span>
+									<div class="circleStat">
+										<input type="text" value="78" class="whiteCircle" />
+									</div>
+									<div class="footer">
+										<span class="count">
+											<span class="number">5000</span>
+											<span class="unit">GB</span>
+										</span>
+										<span class="sep"> / </span>
+										<span class="value">
+											<span class="number">5000</span>
+											<span class="unit">GB</span>
+										</span>	
+									</div>
+								</div>
+							</div>
+
+						</div>	
+						<div class="clearfix"></div>
+					</div>
+	
+
+				</div><!--/span-->
+				
+			</div><!--/row-->
+			
+			
+			
+       
+
+	</div><!--/.fluid-container-->
+	
+			<!-- end: Content -->
+		</div><!--/#content.span10-->
+		</div><!--/fluid-row-->
+		
+	<div class="modal hide fade" id="myModal">
+		<div class="modal-header">
+			<button type="button" class="close" data-dismiss="modal">×</button>
+			<h3>Settings</h3>
+		</div>
+		<div class="modal-body">
+			<p>Here settings can be configured...</p>
+		</div>
+		<div class="modal-footer">
+			<a href="#" class="btn" data-dismiss="modal">Close</a>
+			<a href="#" class="btn btn-primary">Save changes</a>
+		</div>
+	</div>
+	
+	<div class="common-modal modal fade" id="common-Modal1" tabindex="-1" role="dialog" aria-hidden="true">
+		<div class="modal-content">
+			<ul class="list-inline item-details">
+				<li><a href="http://themifycloud.com">Admin templates</a></li>
+				<li><a href="http://themescloud.org">Bootstrap themes</a></li>
+			</ul>
+		</div>
+	</div>
+	
+	<div class="clearfix"></div>
+	
+	<footer>
+
+		<p>
+			<span style="text-align:left;float:left">&copy; 2016 <a href="http://safikdn.ee.student.pens.ac.id" alt="Bootstrap_Metro_Dashboard">MUWLET</a></span>
+			
+		</p>
+
+	</footer>
+	
+	<!-- start: JavaScript-->
+
+		<script src="js/jquery-1.9.1.min.js"></script>
+		<script src="js/jquery-migrate-1.0.0.min.js"></script>
+	
+		<script src="js/jquery-ui-1.10.0.custom.min.js"></script>
+	
+		<script src="js/jquery.ui.touch-punch.js"></script>
+	
+		<script src="js/modernizr.js"></script>
+	
+		<script src="js/bootstrap.min.js"></script>
+	
+		<script src="js/jquery.cookie.js"></script>
+	
+		<script src='js/fullcalendar.min.js'></script>
+	
+		<script src='js/jquery.dataTables.min.js'></script>
+
+		<script src="js/excanvas.js"></script>
+		<script src="js/jquery.flot.js"></script>
+		<script src="js/jquery.flot.pie.js"></script>
+		<script src="js/jquery.flot.stack.js"></script>
+		<script src="js/jquery.flot.resize.min.js"></script>
+	
+		<script src="js/jquery.chosen.min.js"></script>
+	
+		<script src="js/jquery.uniform.min.js"></script>
+		
+		<script src="js/jquery.cleditor.min.js"></script>
+	
+		<script src="js/jquery.noty.js"></script>
+	
+		<script src="js/jquery.elfinder.min.js"></script>
+	
+		<script src="js/jquery.raty.min.js"></script>
+	
+		<script src="js/jquery.iphone.toggle.js"></script>
+	
+		<script src="js/jquery.uploadify-3.1.min.js"></script>
+	
+		<script src="js/jquery.gritter.min.js"></script>
+	
+		<script src="js/jquery.imagesloaded.js"></script>
+	
+		<script src="js/jquery.masonry.min.js"></script>
+	
+		<script src="js/jquery.knob.modified.js"></script>
+	
+		<script src="js/jquery.sparkline.min.js"></script>
+	
+		<script src="js/counter.js"></script>
+	
+		<script src="js/retina.js"></script>
+
+		<script src="js/custom.js"></script>
+	<!-- end: JavaScript-->
+	
+</body>
+</html>
