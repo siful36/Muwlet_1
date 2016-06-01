@@ -40,257 +40,165 @@
 
 	<!--bismillah-->
 		<script>
-		var japikey = '005d9063bc2a1cb4999ef67391f2ba42';
-		var jemail = 'nitbot@nitbot.com';
-		var jsuhu = 28, jkelembapan = 60, jreadon = 0;
 
-		function simpanAPIkey(form){
-			japikey = form.APIkey.value;
-			jemail = form.email.value;
-			console.log('APIkey',japikey);
-			console.log('Email',jemail);
-			document.getElementById("loginFlag").className = "bg-success";
+		var saklar=[];
+		var acs712=[];
+		var ds1820=[];
+
+		function DataTerima()
+		{
+			var normal = new XMLHttpRequest();
+
+			normal.open('GET', 'http://api.thingspeak.com/update?api_key=QIQC6QWCAVDYYJHM&field1=111');
+
+			normal.onreadystatechange = function () 
+			{
+				if(normal.readyState==4 && normal.status==200)
+				{
+					console.log('Body:', this.responseText);
+					
+					if(this.responseText==0)
+					{
+						console.log('xxxxxxxxxx');
+						DataTerima();
+					}
+				}
+				
+			};
+
+			normal.send();
+
 		}
 
-		function reqDataFromServer(varon) 
+		function AmbilData() 
 		{
-			var sisip = "";
-			switch(varon) {
-				case 0:
-				sisip='readon';
-				break;
-				case 1:
-				sisip='readon';
-				break;
-				case 2:
-				sisip='readon';
-				break;
-				case 3:
-				sisip='readon';
-				break;
-				case 4:
-				sisip='readon';
-				break;
-				case 5:
-				sisip='readon';
-				break;
-				case 6:
-				sisip='readon';
-				break;
-				case 7:
-				sisip='readon';
-				break;
-				case 8:
-				sisip='readon';
-				break;
-				case 9:
-				sisip='suhu';
-				break;
-				case 10:
-				sisip='kelembapan';
-				break;
-				default:
-				break;
-			}
+			
 			var request = new XMLHttpRequest();
 
-			request.open('GET', 'http://api.geeknesia.com/api/attribute/'+sisip+'?api_key=d815de1139bb8ba2fbba99d77336780e');
+			request.open('GET', 'http://api.thingspeak.com/channels/100192/feeds.json?results=1');
 
-			request.onreadystatechange = function () {
-				var ubclass="default";
-				var flagOn="";
-				if (this.readyState === 4) {
-					console.log('Status:', this.status);
-					console.log('Headers:', this.getAllResponseHeaders());
-					console.log('Body:', this.responseText);
-					objt=jQuery.parseJSON(this.responseText);
-					switch(varon) {
-						case 0:
-						console.log('isi:',objt.output.attribute.readon);
-						flagOn = objt.output.attribute.readon;
-						ubclass = "breset";
-						break;
-						case 1:
-						jreadon = parseInt(objt.output.attribute);
-						flagOn = jreadon & 1;
-						console.log('flagon1:',jreadon);
-						ubclass = "bon1";
-						break;
-						case 2:
-						jreadon = parseInt(objt.output.attribute.readon);
-						flagOn = jreadon & 2;
-						console.log('flagon2:',flagOn);
-						ubclass = "bon2";
-						break;
-						case 3:
-						jreadon = parseInt(objt.output.attribute.readon);
-						flagOn = jreadon & 4;
-						console.log('flagon3:',flagOn);
-						ubclass = "bon3";
-						break;
-						case 4:
-						jreadon = parseInt(objt.output.attribute.readon);
-						flagOn = jreadon & 8;
-						console.log('flagon4:',flagOn);
-						ubclass = "bon4";
-						break;
-						case 5:
-						jreadon = parseInt(objt.output.attribute.readon);
-						flagOn = jreadon & 16;
-						console.log('flagon5:',flagOn);
-						ubclass = "bon5";
-						break;
-						case 6:
-						jreadon = parseInt(objt.output.attribute.readon);
-						flagOn = jreadon & 32;
-						console.log('flagon6:',flagOn);
-						ubclass = "bon6";
-						break;
-						case 7:
-						jreadon = parseInt(objt.output.attribute.readon);
-						flagOn = jreadon & 64;
-						console.log('flagon7:6767');
-						ubclass = "bon7";
-						break;
-						case 8:
-						jreadon = parseInt(objt.output.attribute.readon);
-						flagOn = jreadon & 128;
-						console.log('flagon8:',flagOn);
-						ubclass = "bon8";
-						break;
-						case 9:
-						console.log('isi:',objt.output.attribute.suhu);
-						jsuhu=parseInt(objt.output.attribute.suhu);
-						document.getElementById("suhu").innerHTML = objt.output.attribute.suhu;
-						break;
-						case 10:
-						console.log('isi:',objt.output.attribute.kelembapan);
-						jkelembapan=parseInt(objt.output.attribute.kelembapan);
-						document.getElementById("kelembapan").innerHTML = objt.output.attribute.kelembapan;
-						break;
-						default:
-						break;
-					}
-					if (flagOn===0) 
-					{
-						document.getElementById(ubclass).className = "danger";
-					}
-					else 
-					{
-						document.getElementById(ubclass).className = "success";
-					}
+			request.onreadystatechange = function () 
+			{
+				if(request.readyState==4 && request.status==200)
+				{
+
+					myFunction(request.responseText);
 				}
 			};
 			request.send();
+			function myFunction(response)
+			{
+				var arr = response;
+				var i;
+				var j=0;
+				var dt='';
+				
+				console.log('Banyak data url = ',arr.length);
+				console.log('Data url = ',arr);
+
+				for (i=0;i<arr.length;i++)
+				{
+
+					if(arr[i]=='"')
+					{
+						j++;				
+					}
+					else
+					{
+						if(j==45)
+						{
+
+							dt+=arr[i];
+						}
+					}
+				}
+
+				console.log('Data = ',dt);
+				console.log('Banyak data = ',dt.length);
+
+				var saklar=[];
+				if(dt[3]==0 && dt[4]==0 && dt[5]==2)
+				{
+					console.log('Maju1');
+					if(dt[0]==0 && dt[1]==0 && dt[2]==0)
+					{
+						saklar[0]=dt[8];
+						acs712[0]=dt[9]+dt[10]+dt[11];
+						ds1820[0]=dt[12]+dt[13]+dt[14];
+						console.log('Master = ',saklar[0]);
+						console.log('Master = ',acs712[0]);
+						console.log('Master = ',ds1820[0]);
+						DataTerima();
+					}
+					else if(dt[0]==0 && dt[1]==0 && dt[2]==1)
+					{
+						saklar[1]=dt[8];
+						acs712[1]=dt[9]+dt[10]+dt[11];
+						ds1820[1]=dt[12]+dt[13]+dt[14];
+						console.log('Slave1 = ',saklar[1]);
+						console.log('Slave1 = ',acs712[1]);
+						console.log('Slave1 = ',ds1820[1]);
+						DataTerima();
+					}
+					else if(dt[0]==0 && dt[1]==0 && dt[2]==2)
+					{
+						saklar[2]=dt[8];
+						acs712[2]=dt[9]+dt[10]+dt[11];
+						ds1820[2]=dt[12]+dt[13]+dt[14];
+						console.log('Slave2 = ',saklar[2]);
+						console.log('Slave2 = ',acs712[2]);
+						console.log('Slave2 = ',ds1820[2]);
+						DataTerima();
+					}
+					else if(dt[0]==0 && dt[1]==0 && dt[2]==3)
+					{
+						saklar[3]=dt[8];
+						acs712[3]=dt[9]+dt[10]+dt[11];
+						ds1820[3]=dt[12]+dt[13]+dt[14];
+						console.log('Slave3 = ',saklar[3]);
+						console.log('Slave3 = ',acs712[3]);
+						console.log('Slave3 = ',ds1820[3]);
+						DataTerima();
+					}
+					else
+						console.log('Data Tidak Sesuai...');	
+
+				}
+				else
+					console.log('Data Sudah Dieksekusi');
+			}
 		}
+		
 		function kirimData(asal,onoff) 
 		{
 			var request = new XMLHttpRequest();
-			var kondisi;
-			switch(asal) {
-				case 000:
-					if (onoff==001){ 
-						kondisi=1;
-						console.log('asaal',000);
-						console.log('kondisi',kondisi);}
-					else {
-						kondisi=0; 
-						console.log('asaal',000);
-						console.log('kondisi',kondisi);}
-				break;
-				case 001:
-					if (onoff==001){ 
-						kondisi=1;
-						console.log('asaal',001);
-						console.log('kondisi',kondisi);}
-					else {
-						kondisi=0; 
-						console.log('asaal',001);
-						console.log('kondisi',kondisi);}
-				break;
-				case 002:
-					if (onoff==001){ 
-						kondisi=1;
-						console.log('asaal',002);
-						console.log('kondisi',kondisi);}
-					else {
-						kondisi=0; 
-						console.log('asaal',002);
-						console.log('kondisi',kondisi);}
-				break;
-				case 003:
-					if (onoff==001){ 
-						kondisi=1;
-						console.log('asaal',003);
-						console.log('kondisi',kondisi);}
-					else {
-						kondisi=0; 
-						console.log('asaal',003);
-						console.log('kondisi',kondisi);}
-				break;
-				case 004:
-					if (onoff==001){ 
-						kondisi=1;
-						console.log('asaal',004);
-						console.log('kondisi',kondisi);}
-					else {
-						kondisi=0; 
-						console.log('asaal',004);
-						console.log('kondisi',kondisi);}
-				break;
-				case 005:
-					if (onoff==001){ 
-						kondisi=1;
-						console.log('asaal',005);
-						console.log('kondisi',kondisi);}
-					else {
-						kondisi=0; 
-						console.log('asaal',005);
-						console.log('kondisi',kondisi);}
-				break;
-				case 006:
-					if (onoff==001){ 
-						kondisi=1;
-						console.log('asaal',006);
-						console.log('kondisi',kondisi);}
-					else {
-						kondisi=0; 
-						console.log('asaal',006);
-						console.log('kondisi',kondisi);}
-				break;
-				default:
-				break;
-			}
+			
 			request.open('GET', 'http://api.thingspeak.com/update?api_key=ODIDPCI4YIO7VS00&field1=00'+asal+'00100'+onoff+'');
 
-			request.onreadystatechange = function () {
-				if (this.readyState === 4) {
-					console.log('Status:', this.status);
-					console.log('Headers:', this.getAllResponseHeaders());
-					console.log('Body:', this.responseText);
+			request.onreadystatechange = function () 
+			{
+				if (request.readyState == 4 && request.status==200) 
+				{
+					console.log('Body1 :', this.responseText);
+					if(this.responseText==0)
+					{
+						console.log('sssssss');
+						kirimData();
+					}
 				}
+				
 			};
 
 			request.send();
 		}
 		function oneClick(asl,on_off)
 		{
+			
 			kirimData(asl,on_off);
-			reqDataFromServer(asl);
+			AmbilData();
+
 		}
-		function resetAll()
-		{
-			oneClick(0,0);
-			reqDataFromServer(9);
-			reqDataFromServer(10);
-			reqDataFromServer(1);
-			reqDataFromServer(2);
-			reqDataFromServer(3);
-			reqDataFromServer(4);
-			reqDataFromServer(5);
-			reqDataFromServer(6);
-			reqDataFromServer(0);
-		}
+
 	</script>
 		
 </head>
